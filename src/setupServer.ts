@@ -17,11 +17,13 @@ import { createAdapter } from "@socket.io/redis-adapter";
 import "express-async-errors";
 import helmet from "helmet";
 import compression from "compression";
-import { config } from "./config";
-import applicationRoutes from "./routes";
-import { CustomError, IErrorResponse } from "./globals/helpers/errors-handler";
+import { config } from "@root/config";
+import Logger from "bunyan";
+import applicationRoutes from "@root/routes";
+import { CustomError, IErrorResponse } from "@global/helpers/errors-handler";
 
 const SERVER_PORT = 5000;
+const log: Logger = config.createLogger("server");
 
 export class ChattyServer {
   private app: Application;
@@ -84,7 +86,7 @@ export class ChattyServer {
         response: Response,
         next: NextFunction
       ) => {
-        console.log(error);
+        log.error(error);
 
         if (error instanceof CustomError) {
           return response
@@ -104,7 +106,7 @@ export class ChattyServer {
       this.startHttpServer(httpServer);
       this.socketIOConections(socketIO);
     } catch (error) {
-      console.log(error);
+      log.error(error);
     }
   }
 
@@ -126,9 +128,9 @@ export class ChattyServer {
   }
 
   private startHttpServer(HttpServer: http.Server): void {
-    console.log(`Server has started with process: ${process.pid}`);
+    log.info(`Server has started with process: ${process.pid}`);
     HttpServer.listen(SERVER_PORT, () => {
-      console.log(`Server running on port: ${SERVER_PORT}`);
+      log.info(`Server running on port: ${SERVER_PORT}`);
     });
   }
 
