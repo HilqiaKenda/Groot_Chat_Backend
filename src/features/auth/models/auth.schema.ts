@@ -41,10 +41,10 @@ authSchema.methods.hashPassword = async function (
   return hash(password, SALT_ROUND);
 };
 
-const AuthModel: Model<IAuthDocument> = model<IAuthDocument>(
+const AuthModel: Model<IAuthDocument> = model(
   "Auth",
   authSchema,
   "Auth"
-);
+) as unknown as Model<IAuthDocument>;
 
 export { AuthModel };

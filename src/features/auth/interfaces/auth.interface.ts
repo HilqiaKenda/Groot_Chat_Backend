@@ -1,4 +1,4 @@
-import { Document, ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 
 declare global {
   namespace Express {
@@ -34,6 +34,7 @@ export interface ISignUpData {
   uid: string;
   email: string;
   username: string;
+  password: string;
   avatarColor: string;
 }
 
