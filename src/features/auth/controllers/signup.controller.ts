@@ -10,7 +10,7 @@ import { UploadApiResponse } from "cloudinary";
 import { uploads } from "@global/helpers/cloudinary-upload";
 import HTTP_STATUS from "http-status-codes";
 
-export class Signup {
+export class SignUp {
   @joiValidation(signupSchema)
   public async create(request: Request, response: Response): Promise<void> {
     const { username, email, password, avatarColor, avatarImage } =
@@ -26,7 +26,7 @@ export class Signup {
     const authObjectId: ObjectId = new ObjectId();
     const userObjectId: ObjectId = new ObjectId();
     const uid = `${Helpers.generateRandomInteger(12)}`;
-    const authData: IAuthDocument = Signup.prototype.signupData({
+    const authData: IAuthDocument = SignUp.prototype.signupData({
       _id: authObjectId,
       uid,
       username,

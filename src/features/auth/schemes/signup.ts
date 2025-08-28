@@ -19,7 +19,7 @@ const signupSchema: ObjectSchema = Joi.object().keys({
     "string.empty": "email is a required field",
   }),
   avatarColor: Joi.string().required().messages({
-    anyrequired: "Avatar color is required",
+    "any.required": "Avatar color is required",
   }),
   avatarImage: Joi.string().required().messages({
     "any.required": "Avatar image is required",
