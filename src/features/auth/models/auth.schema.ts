@@ -1,4 +1,4 @@
-import { IAuthDocument } from "@auth/interfaces/auth.interface";
+import { AuthDocumentInterface } from "@auth/interfaces/auth.interface";
 import { Model, model, Schema } from "mongoose";
 import { hash, compare } from "bcryptjs";
 
@@ -22,16 +22,23 @@ const authSchema: Schema = new Schema(
   }
 );
 
-authSchema.pre("save", async function (this: IAuthDocument, next: () => void) {
-  const hashPassword: string = await hash(this.password as string, SALT_ROUND);
-  this.password = hashPassword;
-  next();
-});
+authSchema.pre(
+  "save",
+  async function (this: AuthDocumentInterface, next: () => void) {
+    const hashPassword: string = await hash(
+      this.password as string,
+      SALT_ROUND
+    );
+    this.password = hashPassword;
+    next();
+  }
+);
 
 authSchema.methods.hashPassword = async function (
   password: string
 ): Promise<boolean> {
-  const hashPassword: string = (this as unknown as IAuthDocument).password!;
+  const hashPassword: string = (this as unknown as AuthDocumentInterface)
+    .password!;
   return compare(password, hashPassword);
 };
 
@@ -41,10 +48,10 @@ authSchema.methods.hashPassword = async function (
   return hash(password, SALT_ROUND);
 };
 
-const AuthModel: Model<IAuthDocument> = model(
+const AuthModel: Model<AuthDocumentInterface> = model(
   "Auth",
   authSchema,
   "Auth"
-) as unknown as Model<IAuthDocument>;
+) as unknown as Model<AuthDocumentInterface>;
 
 export { AuthModel };

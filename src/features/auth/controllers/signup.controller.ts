@@ -2,7 +2,10 @@ import { ObjectId } from "mongodb";
 import { Response, Request } from "express";
 import { joiValidation } from "@global/decorators/joi-validation.decorators";
 import { signupSchema } from "@auth/schemes/signup";
-import { IAuthDocument, ISignUpData } from "@auth/interfaces/auth.interface";
+import {
+  AuthDocumentInterface,
+  SignUpDataInterface,
+} from "@auth/interfaces/auth.interface";
 import { authService } from "@service/db/auth.service";
 import { BadRequestError } from "@global/helpers/errors-handler";
 import { Helpers } from "@global/helpers/helpers";
@@ -16,7 +19,7 @@ export class SignUp {
     const { username, email, password, avatarColor, avatarImage } =
       request.body;
 
-    const checkIfUserExist: IAuthDocument =
+    const checkIfUserExist: AuthDocumentInterface =
       await authService.getUserByUsenameOrEmail(username, email);
 
     if (checkIfUserExist) {
@@ -26,7 +29,7 @@ export class SignUp {
     const authObjectId: ObjectId = new ObjectId();
     const userObjectId: ObjectId = new ObjectId();
     const uid = `${Helpers.generateRandomInteger(12)}`;
-    const authData: IAuthDocument = SignUp.prototype.signupData({
+    const authData: AuthDocumentInterface = SignUp.prototype.signupData({
       _id: authObjectId,
       uid,
       username,
@@ -50,7 +53,7 @@ export class SignUp {
       .json({ message: "User created succesfully", authData });
   }
 
-  private signupData(data: ISignUpData): IAuthDocument {
+  private signupData(data: SignUpDataInterface): AuthDocumentInterface {
     const { _id, username, email, uid, password, avatarColor } = data;
     return {
       _id,
@@ -60,6 +63,6 @@ export class SignUp {
       password,
       avatarColor,
       createdAt: new Date(),
-    } as unknown as IAuthDocument;
+    } as unknown as AuthDocumentInterface;
   }
 }

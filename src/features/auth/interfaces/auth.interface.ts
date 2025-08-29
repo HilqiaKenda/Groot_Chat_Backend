@@ -3,12 +3,12 @@ import { ObjectId } from "mongodb";
 declare global {
   namespace Express {
     interface Request {
-      currentUser?: AuthPayload;
+      currentUser?: AuthPayloadInterface;
     }
   }
 }
 
-export interface AuthPayload {
+export interface AuthPayloadInterface {
   userId: string;
   uId: string;
   email: string;
@@ -17,7 +17,7 @@ export interface AuthPayload {
   iat?: number;
 }
 
-export interface IAuthDocument extends Document {
+export interface AuthDocumentInterface extends Document {
   _id: string | ObjectId;
   uId: string;
   email: string;
@@ -29,7 +29,7 @@ export interface IAuthDocument extends Document {
   hashPassword(password: string): Promise<boolean>;
 }
 
-export interface ISignUpData {
+export interface SignUpDataInterface {
   _id: ObjectId;
   uid: string;
   email: string;
@@ -38,6 +38,6 @@ export interface ISignUpData {
   avatarColor: string;
 }
 
-export interface IAuthJob {
-  value?: string | IAuthDocument;
+export interface AuthJobInterface {
+  value?: string | AuthDocumentInterface;
 }
